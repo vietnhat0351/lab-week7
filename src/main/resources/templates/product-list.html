@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <!-- Hiển thị danh sách sản phẩm -->
+    <div class="row" th:each="product : ${pagedProducts}">
+        <div class="col-md-2 mb-4">
+            <img th:src="${product.productImage}" alt="Product Image" class="img-fluid" src="${product.productImage}">
+            <p th:text="${product.name}" class="mt-2"></p>
+            <p th:text="'Giá: ' + ${product.productPrices}"></p>
+        </div>
+    </div>
+
+    <!-- Phân trang -->
+    <ul class="pagination">
+        <li th:if="${pageNumber > 1}" class="page-item"><a th:href="@{'/api/products/' + ${pageNumber - 1}}" class="page-link">Trang trước</a></li>
+        <li th:each="pageNumber : ${#numbers.sequence(1, totalPages)}"
+            th:class="${pageNumber == page} ? 'page-item active' : 'page-item'">
+            <a th:href="@{'/api/products/' + '?page=' + ${pageNumber}}" class="page-link" th:text="${pageNumber}"></a>
+        </li>
+        <li th:if="${page < totalPages}" class="page-item"><a th:href="@{'/api/products/' + ${pageNumber + 1}}" class="page-link">Trang sau</a></li>
+    </ul>
+</div>
+
+<!-- Thêm script và link JS của Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
